@@ -1,0 +1,6 @@
+VLAN_ID,VLAN_Name
+10,Mgmt
+30,Wireless_AP
+200,Servers
+300,User_Data
+400,WiFi_Users

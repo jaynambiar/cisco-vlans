@@ -1,0 +1,25 @@
+---
+- name: Configure VLANs on Switches
+  hosts:
+    - all
+  gather_facts: no
+  tasks:
+    - name: Read VLAN configuration from CSV file
+      read_csv:
+        key: VLAN_ID
+        path: vlans.csv
+        delimiter: ","
+      register: vlan_data
+      run_once: true
+
+    - name: Configure VLANs
+      nxos_vlans:
+        config:
+          - name: "{{ item.value.VLAN_Name }}"
+            vlan_id: "{{ item.value.VLAN_ID }}"
+        state: merged
+      with_dict: "{{ vlan_data.dict }}"
+
+    - name: Save Config
+      nxos_config:
+        save_when: always
